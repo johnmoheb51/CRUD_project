@@ -17,9 +17,24 @@ if(isset($_POST['update'])) {
   $age = $_POST['age'];
   $phone = $_POST['phone'];
   $gender = $_POST['gender'];
-  $update = "UPDATE customers SET full_name='$full_name' ,country='$country',age='$age',phone='$phone',gender='$gender' WHERE id =$id ";
-
-   mysqli_query($connection, $update);
+  
+  // ImageCode
+if(empty($_FILES[' image'] ['name '])) {
+$image_name = $row[ 'image'];
+}
+else
+$image_name = rand(0, 255) . $_FILES['image']['name'];
+$tmp_name = $_FILES['image']['tmp_name'];
+$location = "./upload/$image_name";
+move_uploaded_file($tmp_name, $location);
+$old_image = $row['image'];
+if ($old_image != 'default.jpg') {
+unlink("./upload/$image_name");
+}
+   
+  $update = "UPDATE customers SET full_name='$full_name' ,country='$country',age='$age',phone='$phone',imag='$image',gender='$gender' WHERE id =$id ";
+  
+  mysqli_query($connection, $update); 
   header("location:/start/customers/index.php");
 }
 }
@@ -29,7 +44,7 @@ if(isset($_POST['update'])) {
   <div class="card">
     <a href="./index.php" class="btn btn-info">list </a>
     <div class="card-body">
-      <form  method="POST">
+      <form  method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <label>customer name</label>
           <input type="text" value="<?=$row['full_name']?>" class="form-control" name="full_name">
@@ -45,6 +60,10 @@ if(isset($_POST['update'])) {
         <div>
           <label>customer phone</label>
           <input type="text" value="<?=$row['phone']?>" class="form-control" name="phone">
+        </div>       
+         <div>
+          <label>customer image</label>
+          <input type="file" value="<?=$row['image']?>" class="form-control" name="image">
         </div>
         <div>
           <label>gender</label>

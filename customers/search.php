@@ -5,8 +5,6 @@ include_once "../shared/nav.php";
 $counter = 1;
 
 
-$select = "SELECT * FROM customers ORDER BY id DESC";
-$data = mysqli_query($connection, $select);
 if (isset($_GET['delete'])) {
   $id = $_GET['delete'];
 
@@ -24,21 +22,48 @@ if (isset($_GET['delete'])) {
   header("location:index.php");
 }
 
+if(isset($_POST['search_value'])){
+  $search_value=$_POST['search_value'];
+
+$select = "SELECT * FROM customers WHERE full_name LIKE '%$search_value%' ORDER BY id DESC";
+$data = mysqli_query($connection, $select);
+ $numRows= mysqli_num_rows($data);
+ if( $numRows==0){
+
+  $select = "SELECT * FROM customers WHERE phone LIKE '%$search_value%' ORDER BY id DESC";
+$data = mysqli_query($connection, $select);
+ $numRows= mysqli_num_rows($data);
+ if( $numRows==0){
+  $_SESSION['Message']= "NOT FOUND";
+ }
+
+}
+}
+
+
 ?>
 <div class="container col-md-8">
   <div class="card">
     <h1 class="text-center my-3 "> List All Customer Table <a href="./create.php" class="btn btn-info">Create New </a>
     </h1>
+    <?php if (isset($_SESSION['Message'])): ?>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+  <?= $_SESSION['Message']  ;
+
+  ?>
+  <a href="index.php?clear=done"  class="btn-close" aria-label="Close"></a>
+      </div>
+    <?php endif; ?>
     <div class="card-body">
-      <form action="./search.php" method="post">
+      <form action="">
         <div class="form-group my-4">
           <div class="row">
             <div class="col-md-9">
-              <input type="text" id="myInput" name="search_value" placeholder=" Search By Name OR Phone" class="form-control my-0">
+              <input type="text" id="myInput"  value="<?=$_POST['search_value'] ?>" name="search_value" placeholder=" Search By Name" class="form-control my-0">
             </div>
             <div class="col-md-3">
               <div class="d-grid">
-                <button class="btn btn-info">Search </button>
+                <button class="btn btn-info" >search </button>
               </div>
             </div>
           </div>
@@ -49,6 +74,7 @@ if (isset($_GET['delete'])) {
           <th>id</th>
           <th>fullname</th>
           <th>phone</th>
+
           <th colspan="4">action</th>
         </tr>
         <?php foreach ($data as $items): ?>

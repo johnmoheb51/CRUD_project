@@ -12,11 +12,10 @@ if(isset($_POST['send'])) {
     $phone = $_POST['phone'];
     $gender = $_POST['gender'];
 
-$image_name=  rand(0,255). $_FILES['image']['name'] ; 
+$image_name= rand(0,255). $_FILES['image']['name']; 
 $tmp_name=$_FILES['image']['tmp_name'];
 $location="./upload/$image_name";
-move_uploaded_file($tmp_name,$location);
-
+$test =move_uploaded_file($tmp_name,$location);
 
 
 $insert = "INSERT INTO customers VALUES (NULL , '$full_name' ,'$country',$age , '$phone' ,'$image_name','$gender')";

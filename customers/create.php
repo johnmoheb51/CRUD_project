@@ -3,15 +3,13 @@ include_once "../shared/config.php";
 include_once "../shared/head.php";
 include_once "../shared/nav.php";
 
-
-
 ?>
 <div class="container col-6">
   <div class="card">
   <h1 class="text-center my-3 ">Create New </h1>
     <a href="./index.php" class="btn btn-info">list </a>
     <div class="card-body">
-      <form action="./customer_request.php" method="POST" enctype="multipart/form-data" >
+      <form action="./customer_request.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <label>customer name</label>
           <input type="text" class="form-control" name="full_name">
@@ -30,7 +28,7 @@ include_once "../shared/nav.php";
         </div>
         <div>
         <label>customer image</label>
-          <input type="file" class="form-control" accept="image/*" name="image">
+          <input type="file" class="form-control"  accept="image/*" name="image">
         </div>
         <div>
           <label>gender</label>
